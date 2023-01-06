@@ -26,6 +26,17 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - run: npm ci
-    - run: npm run build --if-present
-    - run: npm test
+    - name: Install Dependencies
+      run: npm install --force
+    - name: Run Tests
+      env:
+        BROWSERSTACK_USER: ${{secrets.BROWSERSTACK_USER}}
+        BROWSERSTACK_API_KEY: ${{secrets.BROWSERSTACK_API_KEY}}
+        TESTING_PLATFORM: ${{secrets.TESTING_PLATFORM}}
+        BROWSERSTACK_APP_LINK: ${{secrets.BROWSERSTACK_APP_LINK}}
+      run: npx wdio
+    - uses: actions/upload-artifact@v3
+      if: failure()
+      with:
+        name: logs
+        path: logs
