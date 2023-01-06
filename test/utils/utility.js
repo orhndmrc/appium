@@ -1,4 +1,5 @@
 class ElementActions {
+    //
     async verticalScrollViewIntoText(text) {
         return await $(`android=new UiScrollable(new UiSelector().scrollable(true)).scrollTextIntoView("${text}")`)
 
